@@ -1,0 +1,117 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">Kpi view menu</h3>
+        <div class="help-tip">
+            <p>
+                <b>Create template</b><br>
+                &nbsp;&nbsp;To create new Kpi template click <b>"Create new"</b> button.<br>
+                &nbsp;&nbsp;Enter template name then select from <b>"Kpi's to hide"</b> list kpi's <br>
+                &nbsp;&nbsp;and click left arrow. Selected kpi's now appears in left <br>
+                &nbsp;&nbsp;list named <b>"Kpi's to show"</b>.Click <b>"Save"</b> or <b>"Cancel"</b> buttons.<br><br>
+
+                <b>Delete template</b> <br>
+                &nbsp;&nbsp;Select template from "Personal templates" list, click <b>"Delete"</b>.<br><br>
+
+                <b>Edit template</b> <br>
+                &nbsp;&nbsp;Select template from "Personal templates" list, click <b>"Edit"</b>.<br><br>
+
+                <b>Activate, deactivate template</b><br>
+                &nbsp;&nbsp;To make template active in "Personal templates" list click <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>.<br>
+                &nbsp;&nbsp;To deactivate click <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>.
+            </p>
+
+
+        </div>
+    </div>
+    <div class="modal-body">
+
+        <div class="container">
+
+            <div class="col-sm-3" style="padding-right: 30px; height: 200px">
+
+               <div>
+                   <h4>Personal templates</h4>
+                   <ul class="divider"></ul>
+                   <ul>
+                       <li ng-repeat="item in personalTemplateItems" >
+                           <span ng-class="{'label label-success': item.active == true, 'selected': item.id === idSelectedElement && !item.active }" ng-click="showSelection(item); setSelected(item.id)" >{{item.templateName}}</span>
+                           <span ng-if="item.active == true"
+                                 class="glyphicon glyphicon-remove"
+                                 ng-click="makeInactive(item)"
+                                 title="Deactivate template"
+                           ></span>
+                           <span ng-if="item.active == false"
+                                 class="glyphicon glyphicon-pushpin"
+                                 ng-click="makeActive(item)"
+                                 title="Set as active template"
+                           ></span>
+                       </li>
+                   </ul>
+               </div>
+
+             </div>
+
+             <div class="col-sm-9">
+                 <div class="container" style="padding-bottom: 20px;padding-left: 0;">
+
+                     <div class="col-sm-10" style="padding-left: 0;">
+                         <div class="col-sm-4 btn-group inline" ng-hide="isHidedCreateNewButton">
+                             <input class="btn btn-default" style="background-color: #637b85; color: #fff !important; margin-right: 5px;"
+                                    type="button" value="Create new"
+                                    ng-click="createNewTemplate()"
+                             >
+                             <button ng-hide="personalTemplateItems.length === 0" class="btn btn-danger" type="button" style="!important; margin-right: 5px;" ng-click="deleteSelectedTemplate()">Delete</button>
+                             <button ng-hide="personalTemplateItems.length === 0" class="btn btn-info" type="button" ng-click="makeEditMode()">Edit</button>
+                         </div>
+
+
+                         <div class="col-sm-4" ng-show="isVisibleTemplateInput">
+                             <label>Template name</label>
+                             <input type="text" class="form-control" ng-model="templateName"/>
+                         </div>
+
+                         <div ng-show="isVisibleSaveButton" class="btn-group inline " style="padding-right: 65px; float: right;">
+                             <button class="btn btn-success" type="button" ng-click="submit()" style="margin-right: 5px;">Save</button>
+                             <button class="btn btn-warning" type="button" ng-click="cancelSave()" style=" float: right;">Cancel</button>
+                         </div>
+
+                         <div ng-show="isVisibleEditButton" class="btn-group inline " style="padding-right: 65px; float: right;">
+                             <button class="btn btn-success" type="button" ng-click="editSelectedTemplate()" style="margin-right: 5px;">Save</button>
+                             <button class="btn btn-warning" type="button" ng-click="cancelSave()" style=" float: right;">Cancel</button>
+                         </div>
+
+                         <!-- <div class="col-sm-4" style="float: left">
+                             <label>Template type:</label>
+                             <ui-select id="templateTypeFilter" ng-model="templateTypeSelected" on-select="updateTemplateType()" theme="bootstrap">
+                                 <ui-select-match placeholder="Selected a template type">{{$select.selected.value}}</ui-select-match>
+                                 <ui-select-choices repeat="name.value as (key, name) in templateTypeList">
+                                     <div ng-bind-html="name.value | highlight: $select.search"></div>
+                                 </ui-select-choices>
+                             </ui-select>
+                         </div>-->
+
+                     </div>
+                 </div>
+
+                 <fieldset ng-disabled="isKpiSelectorDisabled">
+                 <ng-list-select
+                         button-style="ghost"
+                         panel-style="ghost"
+                         selected-list="selectedList"
+                         key="name"
+                         available-list="availableList"
+                         height="400px"
+                         width="900px"
+                         available-label="Kpi's to show"
+                         selected-label="Kpi's to hide"
+                 ></ng-list-select>
+                 </fieldset>
+             </div>
+
+         </div>
+     </div>
+     <div class="modal-footer">
+
+         <button class="btn btn-primary" type="button" ng-click="close()">Close</button>
+     </div>
+ </div>

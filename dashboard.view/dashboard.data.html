@@ -1,0 +1,73 @@
+<uib-tabset active="active">
+
+    <uib-tab index="0" heading="Table">
+        <table id="DashboardData" class="table table-bordered table-condensed t smallFont">
+            <thead>
+            <tr>
+                <th style="word-wrap:break-word; width:16%">KPI</th>
+                <!--TODO add template to show additional KPI data-->
+                <th>Unit</th>
+                <!--<th style="text-align: right;" ng-repeat="month in dashDataCtrl.months">{{month.monthName}}</th>-->
+                <th>{{Model.monthSelected.shortName}}&nbsp;Value</th>
+                <th>{{Model.monthSelected.shortName}}&nbsp;Target</th>
+                <th>YTD&nbsp;Actual</th>
+                <th>YTD&nbsp;Target</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="singleKpi in dashDataCtrl.dashboardData">
+                <td ng-click="dashDataCtrl.chooseStateLink(singleKpi.kpi)">
+                    <a ng-href="{{dashDataCtrl.getLinkUrl(singleKpi.kpi)}}">
+                        <span ng-bind-html="dashDataCtrl.cleanKpiName(singleKpi.kpi.ratioName)"></span>
+                    </a>
+                </td>
+                <td>{{singleKpi.kpi.unit}}</td>
+                <!--<td style="text-align: right;" ng-repeat="month in dashDataCtrl.months">
+                    {{dashDataCtrl.getFinalSingleMonthValue(month.writeDate,  singleKpi.finalResults, singleKpi.kpi.decimalPlace)}}
+                </td>-->
+                <td ng-class="dashDataCtrl.getBackgroundColor(Model.monthSelected, singleKpi)">
+                    {{dashDataCtrl.getFinalSingleMonthValue(Model.monthSelected.writeDate, singleKpi.finalResults,
+                    singleKpi.kpi.decimalPlace)}}
+                </td>
+                <td>{{dashDataCtrl.getMonthTarget(Model.monthSelected.monthNr, singleKpi.targets,
+                    singleKpi.kpi.decimalPlace)}}
+                </td>
+                <td ng-class="dashDataCtrl.getBackgroundColor(Model.monthSelected, singleKpi, true)">
+                    {{dashDataCtrl.getYtdActual(Model.monthSelected.monthNr, singleKpi)}}
+                </td>
+                <td>{{dashDataCtrl.getYtdTarget(Model.monthSelected.monthNr, singleKpi)}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </uib-tab>
+
+    <uib-tab index="1" heading="Charts" ng-model="checked" ng-init="checked=false" select="checked=true">
+        <div class="panel panel-info" ng-repeat="group in dashDataCtrl.kpiGroups"
+             ng-show="dashDataCtrl.filterKpiGroup(group).length > 0">
+            <div class="panel-heading" style="background-color: #637B85; color: #FFFFFF">
+                <h3 class="panel-title">{{group.name}}</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <dashboard-chart
+                            chartid="$index"
+                            chartname="singleKpi.kpiName"
+                            chartbardata="singleKpi.chartBarData"
+                            charttargetdata="singleKpi.targetData"
+                            chartbarcolors="singleKpi.barColors"
+                            chartdata="dashDataCtrl.chartDefaultValues"
+                            selectedplantid="dashDataCtrl.plantSelected.id"
+                            selectedyear="dashDataCtrl.yearSelected"
+                            kpiid="singleKpi.id"
+                            regionid="dashDataCtrl.regionSelectedId"
+                            planttypeid="dashDataCtrl.plantTypeSelectedId"
+                            cbuTypeId="dashDataCtrl.cbuTypeId"
+                            ng-repeat="singleKpi in dashDataCtrl.filterKpiGroup(group)">
+                    </dashboard-chart>
+                </div>
+            </div>
+        </div>
+    </uib-tab>
+</uib-tabset>
