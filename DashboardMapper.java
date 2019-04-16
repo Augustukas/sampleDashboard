@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 @Repository
-public interface DashboardKpiViewMapper {
+public interface DashboardMapper {
 
     @Select("SELECT t.excludedRatioId FROM tbldashboardkpiview as dkv " +
             "LEFT JOIN tbldashboardkpiviewtemplate AS t ON t.dashboardKpiViewId = dkv.id " +
